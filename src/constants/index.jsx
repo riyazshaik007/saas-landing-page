@@ -117,7 +117,7 @@ export const features = [
       priceYearly: 12,
       caption: "Best for solo creators",
       features: [
-        "100MB Cloud storage",
+        "200MB Cloud storage",
         "100+ prompt templates",
         "5 projects",
         "24/7 support",
