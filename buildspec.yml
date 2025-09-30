@@ -4,6 +4,7 @@ env:
   variables:
     IMAGE_REPO_NAME: "react-app"
     IMAGE_TAG: "latest"
+   
 
 phases:
   pre_build:
