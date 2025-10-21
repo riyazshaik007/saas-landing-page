@@ -2,8 +2,8 @@ version: 0.2
 
 env:
   variables:
-    IMAGE_REPO_NAME: "react-app"
-    IMAGE_TAG: "latest"
+    #IMAGE_REPO_NAME: "react-app"
+    #IMAGE_TAG: "latest"
     # Optional: Uncomment and set these if not auto-populated by CodeBuild
     # AWS_DEFAULT_REGION: "us-east-1"  # Replace with your region
     # AWS_ACCOUNT_ID: "807034087511"  # Replace with your AWS account ID
