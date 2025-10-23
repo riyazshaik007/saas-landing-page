@@ -5,12 +5,12 @@ env:
     IMAGE_REPO_NAME: "react-app"
     IMAGE_TAG: "latest"
     # Optional: Uncomment and set these if not auto-populated by CodeBuild
-     AWS_DEFAULT_REGION: "us-east-1"  # Replace with your region
-     AWS_ACCOUNT_ID: "807034087511"  # Replace with your AWS account ID
+    AWS_DEFAULT_REGION: "us-east-1"  # Replace with your region
+    AWS_ACCOUNT_ID: "807034087511"   # Replace with your AWS account ID
   # Optional: Uncomment this ONLY if you need a Docker PAT for private registries (e.g., Docker Hub)
   # Ensure the secret exists in AWS Secrets Manager and your CodeBuild role has permissions!
   # secrets-manager:
- 
+  #   DOCKER_PAT: "your-docker-pat-secret-name"
 
 phases:
   pre_build:
