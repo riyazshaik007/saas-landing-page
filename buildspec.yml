@@ -4,31 +4,40 @@ env:
   variables:
     IMAGE_REPO_NAME: "react-app"
     IMAGE_TAG: "latest"
-    AWS_DEFAULT_REGION: "us-east-1"   # Replace with your region
-    AWS_ACCOUNT_ID: "807034087511"    # Replace with your AWS account ID
-  # Optional: Uncomment this ONLY if you need a Docker PAT for private registries
+    AWS_DEFAULT_REGION: "us-east-1"
+    AWS_ACCOUNT_ID: "807034087511"
+  # Optional: Docker Hub PAT if needed
   # secrets-manager:
   #   DOCKER_PAT: "your-docker-pat-secret-name"
 
 phases:
   pre_build:
     commands:
-      - echo Logging in to Amazon ECR...
+      - echo "Checking if ECR repository exists..."
+      - |
+        aws ecr describe-repositories --repository-names $IMAGE_REPO_NAME --region $AWS_DEFAULT_REGION || \
+        aws ecr create-repository --repository-name $IMAGE_REPO_NAME --region $AWS_DEFAULT_REGION
+      - echo "Logging in to Amazon ECR..."
       - aws --version
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      # Optional Docker Hub login
+      # - echo "Logging in to Docker Hub..."
+      # - docker login --username your-docker-username --password $DOCKER_PAT
 
   build:
     commands:
-      - echo Building the Docker image...
+      - echo "Building the Docker image..."
       - docker build -t $IMAGE_REPO_NAME .
+      - echo "Tagging the Docker image..."
       - docker tag $IMAGE_REPO_NAME:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
 
   post_build:
     commands:
-      - echo Pushing the Docker image to ECR...
+      - echo "Pushing the Docker image to ECR..."
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
-      - echo Creating imagedefinitions.json file...
+      - echo "Creating imagedefinitions.json for ECS..."
       - printf '[{"name":"%s","imageUri":"%s"}]' "$IMAGE_REPO_NAME" "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG" > imagedefinitions.json
+      - echo "imagedefinitions.json content:"
       - cat imagedefinitions.json
 
 artifacts:
