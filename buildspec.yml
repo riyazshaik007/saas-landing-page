@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    IMAGE_REPO_NAME: "react-app"
+    IMAGE_REPO_NAME: "react-app1"
     IMAGE_TAG: "latest"
     AWS_DEFAULT_REGION: "us-east-1"
     AWS_ACCOUNT_ID: "807034087511"
